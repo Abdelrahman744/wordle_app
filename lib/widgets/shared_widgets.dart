@@ -79,27 +79,35 @@ class BigButton extends StatelessWidget {
   final String text;
   final VoidCallback onTap;
   final bool outlined;
-  const BigButton(this.text, this.onTap, {this.outlined = false, super.key});
+  final bool loading;
+  const BigButton(this.text, this.onTap,
+      {this.outlined = false, this.loading = false, super.key});
   @override
   Widget build(BuildContext context) => SizedBox(
     width: double.infinity,
     height: 54,
     child: outlined
         ? OutlinedButton(
-            onPressed: onTap,
+            onPressed: loading ? null : onTap,
             style: OutlinedButton.styleFrom(
               side: const BorderSide(color: kGreen),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(14),
               ),
             ),
-            child: Text(
-              text,
-              style: const TextStyle(fontSize: 16, color: kGreen),
-            ),
+            child: loading
+                ? const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                        color: kGreen, strokeWidth: 2))
+                : Text(
+                    text,
+                    style: const TextStyle(fontSize: 16, color: kGreen),
+                  ),
           )
         : ElevatedButton(
-            onPressed: onTap,
+            onPressed: loading ? null : onTap,
             style: ElevatedButton.styleFrom(
               backgroundColor: kGreen,
               foregroundColor: Colors.white,
@@ -107,10 +115,17 @@ class BigButton extends StatelessWidget {
                 borderRadius: BorderRadius.circular(14),
               ),
             ),
-            child: Text(
-              text,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-            ),
+            child: loading
+                ? const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                        color: Colors.white, strokeWidth: 2))
+                : Text(
+                    text,
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.w700),
+                  ),
           ),
   );
 }
